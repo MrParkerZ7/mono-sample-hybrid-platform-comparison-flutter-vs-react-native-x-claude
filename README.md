@@ -1,15 +1,48 @@
 # Hybrid Mobile Platform Comparison: Flutter vs React Native
 
-A comprehensive demo project comparing **Flutter** and **React Native (Expo)** mobile development frameworks. Each platform is fully self-contained with its own API and database.
+A comprehensive **Super App** demo project comparing **Flutter** and **React Native (Expo)** mobile development frameworks. Each platform is fully self-contained with its own API and database.
 
 ## Project Overview
 
-This repository contains two independent demo projects for comparing mobile development approaches:
+This repository contains two independent demo projects implementing the same **Super App** with 7 feature modules:
 
 | Project | Mobile | API | Database |
 |---------|--------|-----|----------|
 | sample-flutter | Flutter (Dart) | Spring Boot (Java 17) | MongoDB |
 | sample-react-native-expo | React Native Expo (TypeScript) | NestJS (TypeScript) | MongoDB |
+
+## Super App Features
+
+Both apps implement identical features for fair comparison:
+
+| Module | Features |
+|--------|----------|
+| **Authentication** | Register, Login, Logout, Password Reset, JWT Token |
+| **Profile** | View/Edit Profile, Avatar Upload, Settings, View Other Users |
+| **Task Management** | CRUD Tasks, Categories, Priority, Due Dates, Status, Filter/Search |
+| **E-commerce** | Products, Categories, Cart, Checkout, Orders, Wishlist |
+| **Social Feed** | Posts, Comments, Likes, Follow/Unfollow, Timeline, Explore |
+| **Notes/Journal** | Rich Text Notes, Tags, Search, Pin/Favorite |
+| **Event Map** | Create Events, Map Location, Duration, RSVP, Map View |
+
+## App Navigation
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        SUPER APP                             │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐    │
+│  │  Home  │ │  Feed  │ │  Map   │ │  Shop  │ │Profile │    │
+│  │        │ │        │ │        │ │        │ │        │    │
+│  │ Tasks  │ │ Posts  │ │ Events │ │Products│ │Settings│    │
+│  │ Notes  │ │ Create │ │ Create │ │ Cart   │ │ Edit   │    │
+│  └────────┘ └────────┘ └────────┘ └────────┘ └────────┘    │
+│                                                              │
+│              [ Bottom Tab Navigation ]                       │
+│         [Home] [Feed] [Map] [Shop] [Profile]                │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## Architecture
 
@@ -48,6 +81,7 @@ Each project is completely self-contained with its own `docker-compose.yml`:
 ```
 mono-sample-hybrid-platform/
 ├── README.md                           # This file
+├── FEATURES.md                         # Detailed feature specification
 │
 ├── sample-flutter/                     # Flutter Demo Project
 │   ├── README.md                       # Project documentation
@@ -56,15 +90,33 @@ mono-sample-hybrid-platform/
 │   │
 │   ├── mobile/                         # Flutter mobile app
 │   │   ├── lib/
+│   │   │   ├── core/                   # Core utilities
+│   │   │   ├── features/               # Feature modules
+│   │   │   │   ├── auth/
+│   │   │   │   ├── profile/
+│   │   │   │   ├── tasks/
+│   │   │   │   ├── shop/
+│   │   │   │   ├── feed/
+│   │   │   │   ├── notes/
+│   │   │   │   └── events/
+│   │   │   └── shared/
 │   │   ├── test/
 │   │   └── pubspec.yaml
 │   │
 │   ├── api/                            # Spring Boot REST API
-│   │   ├── src/
+│   │   ├── src/main/java/.../modules/
+│   │   │   ├── auth/
+│   │   │   ├── users/
+│   │   │   ├── tasks/
+│   │   │   ├── products/
+│   │   │   ├── orders/
+│   │   │   ├── posts/
+│   │   │   ├── notes/
+│   │   │   └── events/
 │   │   ├── Dockerfile
 │   │   └── pom.xml
 │   │
-│   └── docker/                         # Docker configurations
+│   └── docker/
 │       └── mongo-init/
 │
 └── sample-react-native-expo/           # React Native Demo Project
@@ -74,17 +126,86 @@ mono-sample-hybrid-platform/
     │
     ├── mobile/                         # React Native Expo app
     │   ├── src/
+    │   │   ├── app/                    # Expo Router
+    │   │   ├── core/                   # Core utilities
+    │   │   ├── features/               # Feature modules
+    │   │   │   ├── auth/
+    │   │   │   ├── profile/
+    │   │   │   ├── tasks/
+    │   │   │   ├── shop/
+    │   │   │   ├── feed/
+    │   │   │   ├── notes/
+    │   │   │   └── events/
+    │   │   └── shared/
     │   ├── __tests__/
     │   └── package.json
     │
     ├── api/                            # NestJS REST API
-    │   ├── src/
+    │   ├── src/modules/
+    │   │   ├── auth/
+    │   │   ├── users/
+    │   │   ├── tasks/
+    │   │   ├── products/
+    │   │   ├── orders/
+    │   │   ├── posts/
+    │   │   ├── notes/
+    │   │   └── events/
     │   ├── test/
     │   ├── Dockerfile
     │   └── package.json
     │
-    └── docker/                         # Docker configurations
+    └── docker/
         └── mongo-init/
+```
+
+## Database Schema
+
+```
+MongoDB Collections:
+
+users
+├── _id, email, password, name, avatar, bio
+├── createdAt, updatedAt
+
+tasks
+├── _id, userId, title, description, category
+├── priority, status, dueDate
+├── createdAt, updatedAt
+
+products
+├── _id, name, description, price, images[]
+├── category, stock, rating
+├── createdAt, updatedAt
+
+orders
+├── _id, userId, items[], totalAmount
+├── status, shippingAddress
+├── createdAt, updatedAt
+
+posts
+├── _id, userId, content, images[]
+├── likes[], commentsCount
+├── createdAt, updatedAt
+
+comments
+├── _id, postId, userId, content
+├── createdAt
+
+notes
+├── _id, userId, title, content
+├── tags[], isPinned, isFavorite
+├── createdAt, updatedAt
+
+events
+├── _id, userId, title, description
+├── location { lat, lng, address }
+├── startDate, endDate
+├── attendees[], interestedUsers[]
+├── createdAt, updatedAt
+
+follows
+├── _id, followerId, followingId
+├── createdAt
 ```
 
 ## Quick Start
@@ -115,22 +236,40 @@ docker-compose up -d
 # Swagger docs at http://localhost:3000/api
 ```
 
-## Feature Comparison Matrix
-
-Both projects implement identical features for fair comparison:
+## Tech Comparison Matrix
 
 | Feature | Flutter | React Native |
 |---------|---------|--------------|
 | **Language** | Dart | TypeScript |
-| **State Management** | BLoC / Riverpod | Zustand / React Query |
+| **State Management** | BLoC / flutter_bloc | Zustand + React Query |
 | **Navigation** | GoRouter | Expo Router |
 | **HTTP Client** | Dio | Axios |
 | **Form Validation** | flutter_form_builder | React Hook Form + Zod |
 | **Local Storage** | Hive | MMKV |
 | **Dependency Injection** | get_it + injectable | tsyringe |
+| **Map Integration** | google_maps_flutter | react-native-maps |
+| **Image Picker** | image_picker | expo-image-picker |
+| **Rich Text Editor** | flutter_quill | react-native-pell-rich-editor |
 | **Testing** | flutter_test + mockito | Jest + Testing Library |
-| **API Framework** | Spring Boot (Java) | NestJS (TypeScript) |
-| **API Testing** | JUnit + Testcontainers | Jest + Supertest |
+| **API Framework** | Spring Boot (Java 17) | NestJS (TypeScript) |
+| **API Testing** | JUnit 5 + Testcontainers | Jest + Supertest |
+
+## API Endpoints
+
+Both APIs implement the same endpoints:
+
+| Module | Endpoints |
+|--------|-----------|
+| **Auth** | POST `/auth/register`, `/auth/login`, `/auth/refresh`, `/auth/logout` |
+| **Users** | GET `/users/me`, PUT `/users/me`, GET `/users/:id` |
+| **Tasks** | CRUD `/tasks`, GET `/tasks?status=&category=` |
+| **Products** | GET `/products`, GET `/products/:id`, GET `/products?category=` |
+| **Orders** | POST `/orders`, GET `/orders`, GET `/orders/:id` |
+| **Posts** | CRUD `/posts`, POST `/posts/:id/like`, GET `/posts/feed` |
+| **Comments** | CRUD `/posts/:postId/comments` |
+| **Notes** | CRUD `/notes`, GET `/notes?tag=&search=` |
+| **Events** | CRUD `/events`, GET `/events/map?lat=&lng=&radius=` |
+| **Follows** | POST `/users/:id/follow`, DELETE `/users/:id/unfollow` |
 
 ## Development Standards
 

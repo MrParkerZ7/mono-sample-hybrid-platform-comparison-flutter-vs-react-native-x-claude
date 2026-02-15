@@ -1,6 +1,6 @@
-# Sample Flutter Project
+# Sample Flutter Project - Super App
 
-A complete Flutter mobile application demo with Spring Boot API backend and MongoDB database. Run everything with a single `docker-compose up` command.
+A complete **Super App** demo built with Flutter and Spring Boot API, featuring 7 integrated modules: Auth, Profile, Tasks, E-commerce, Social Feed, Notes, and Event Map.
 
 ## Tech Stack
 
@@ -10,6 +10,18 @@ A complete Flutter mobile application demo with Spring Boot API backend and Mong
 | API | Spring Boot 3.2 (Java 17) | REST API backend |
 | Database | MongoDB 7.0 | NoSQL database |
 | Container | Docker Compose | Orchestration |
+
+## Features
+
+| Module | Description |
+|--------|-------------|
+| **Authentication** | Register, Login, JWT, Password Reset |
+| **Profile** | User profile, avatar upload, settings |
+| **Task Management** | CRUD tasks, categories, priorities, due dates |
+| **E-commerce** | Products, cart, checkout, orders, wishlist |
+| **Social Feed** | Posts, comments, likes, follow/unfollow |
+| **Notes/Journal** | Rich text notes, tags, pin, favorites |
+| **Event Map** | Location-based events, map view, RSVP |
 
 ## Architecture
 
@@ -24,7 +36,7 @@ A complete Flutter mobile application demo with Spring Boot API backend and Mong
 │   │                 │                                          │
 │   │  • Clean Arch   │                                          │
 │   │  • BLoC Pattern │                                          │
-│   │  • Dio HTTP     │                                          │
+│   │  • 7 Modules    │                                          │
 │   └────────┬────────┘                                          │
 │            │                                                    │
 │            ▼                                                    │
@@ -42,9 +54,9 @@ A complete Flutter mobile application demo with Spring Boot API backend and Mong
 
 ```
 sample-flutter/
-├── README.md                    # This file
-├── docker-compose.yml           # Docker orchestration
-├── .env.example                 # Environment variables template
+├── README.md
+├── docker-compose.yml
+├── .env.example
 │
 ├── mobile/                      # Flutter Mobile Application
 │   ├── lib/
@@ -60,11 +72,12 @@ sample-flutter/
 │   │   │   └── utils/
 │   │   ├── features/
 │   │   │   ├── auth/
-│   │   │   │   ├── data/
-│   │   │   │   ├── domain/
-│   │   │   │   └── presentation/
-│   │   │   ├── home/
-│   │   │   └── profile/
+│   │   │   ├── profile/
+│   │   │   ├── tasks/
+│   │   │   ├── shop/
+│   │   │   ├── feed/
+│   │   │   ├── notes/
+│   │   │   └── events/
 │   │   ├── injection/
 │   │   └── shared/
 │   ├── test/
@@ -72,24 +85,25 @@ sample-flutter/
 │   └── analysis_options.yaml
 │
 ├── api/                         # Spring Boot REST API
-│   ├── src/
-│   │   ├── main/java/com/example/
-│   │   │   ├── Application.java
-│   │   │   ├── config/
-│   │   │   ├── common/
-│   │   │   ├── security/
-│   │   │   └── modules/
-│   │   │       ├── auth/
-│   │   │       └── user/
-│   │   └── resources/
-│   │       ├── application.yml
-│   │       └── application-docker.yml
+│   ├── src/main/java/com/example/
+│   │   ├── Application.java
+│   │   ├── config/
+│   │   ├── common/
+│   │   ├── security/
+│   │   └── modules/
+│   │       ├── auth/
+│   │       ├── users/
+│   │       ├── tasks/
+│   │       ├── products/
+│   │       ├── orders/
+│   │       ├── posts/
+│   │       ├── notes/
+│   │       └── events/
 │   ├── Dockerfile
 │   └── pom.xml
 │
 └── docker/
     └── mongo-init/
-        └── init-db.js
 ```
 
 ## Quick Start
@@ -97,53 +111,25 @@ sample-flutter/
 ### Prerequisites
 
 - Docker & Docker Compose
-- (Optional for mobile development):
-  - Flutter SDK 3.19+
-  - Android Studio / Xcode
+- (Optional) Flutter SDK 3.19+, Android Studio / Xcode
 
 ### Run with Docker
 
 ```bash
-# Navigate to project
 cd sample-flutter
-
-# Copy environment file
 cp .env.example .env
-
-# Start all services (API + MongoDB)
 docker-compose up -d
 
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-
-# Stop and remove volumes
-docker-compose down -v
+# API: http://localhost:8080
+# Swagger: http://localhost:8080/swagger-ui.html
 ```
 
-### Service Endpoints
-
-| Service | URL | Description |
-|---------|-----|-------------|
-| Spring Boot API | http://localhost:8080/api/v1 | REST API |
-| Swagger UI | http://localhost:8080/swagger-ui.html | API Documentation |
-| MongoDB | mongodb://localhost:27017 | Database |
-| Mongo Express | http://localhost:8081 | DB Admin (optional) |
-
-### Run Flutter App Locally
+### Run Flutter App
 
 ```bash
 cd mobile
-
-# Install dependencies
 flutter pub get
-
-# Generate code (injectable, json_serializable)
 flutter pub run build_runner build --delete-conflicting-outputs
-
-# Run on device/emulator
 flutter run
 ```
 
@@ -153,48 +139,36 @@ flutter run
 
 ```
 features/
-└── auth/
-    ├── data/                    # Data Layer
-    │   ├── datasources/         # API calls, local storage
-    │   ├── models/              # DTOs, JSON serialization
-    │   └── repositories/        # Repository implementations
-    │
-    ├── domain/                  # Domain Layer
-    │   ├── entities/            # Business objects
-    │   ├── repositories/        # Repository interfaces
-    │   └── usecases/            # Business logic
-    │
-    └── presentation/            # Presentation Layer
-        ├── bloc/                # BLoC state management
-        ├── pages/               # Screens
-        └── widgets/             # UI components
+└── [feature]/
+    ├── data/
+    │   ├── datasources/
+    │   ├── models/
+    │   └── repositories/
+    ├── domain/
+    │   ├── entities/
+    │   ├── repositories/
+    │   └── usecases/
+    └── presentation/
+        ├── bloc/
+        ├── pages/
+        └── widgets/
 ```
 
 ### Key Dependencies
 
 ```yaml
 dependencies:
-  # State Management
-  flutter_bloc: ^8.1.0
-
-  # Dependency Injection
-  get_it: ^7.6.0
-  injectable: ^2.3.0
-
-  # Navigation
-  go_router: ^13.0.0
-
-  # Network
-  dio: ^5.4.0
-
-  # Local Storage
-  hive: ^2.2.0
-  hive_flutter: ^1.1.0
-
-  # Utilities
-  dartz: ^0.10.0           # Functional programming (Either)
-  equatable: ^2.0.0        # Value equality
-  json_annotation: ^4.8.0  # JSON serialization
+  flutter_bloc: ^8.1.0           # State management
+  get_it: ^7.6.0                 # Dependency injection
+  injectable: ^2.3.0             # DI code generation
+  go_router: ^13.0.0             # Navigation
+  dio: ^5.4.0                    # HTTP client
+  hive: ^2.2.0                   # Local storage
+  google_maps_flutter: ^2.5.0    # Maps
+  image_picker: ^1.0.0           # Image selection
+  flutter_quill: ^9.0.0          # Rich text editor
+  dartz: ^0.10.0                 # Functional programming
+  equatable: ^2.0.0              # Value equality
 
 dev_dependencies:
   flutter_test:
@@ -202,50 +176,39 @@ dev_dependencies:
   bloc_test: ^9.1.0
   mockito: ^5.4.0
   build_runner: ^2.4.0
-  injectable_generator: ^2.4.0
-  json_serializable: ^6.7.0
 ```
 
-### Testing
+### Navigation Structure
 
-```bash
-cd mobile
-
-# Run all tests
-flutter test
-
-# Run with coverage
-flutter test --coverage
-
-# Generate HTML report
-genhtml coverage/lcov.info -o coverage/html
+```
+Bottom Tab Navigation:
+├── Home (Tasks + Notes)
+├── Feed (Social)
+├── Map (Events)
+├── Shop (E-commerce)
+└── Profile (Settings)
 ```
 
 ## API (Spring Boot)
 
-### Architecture: Layered Architecture
+### Modules
 
-```
-modules/
-└── auth/
-    ├── controller/          # REST endpoints
-    │   └── AuthController.java
-    ├── service/             # Business logic
-    │   ├── AuthService.java
-    │   └── impl/
-    ├── repository/          # Data access
-    │   └── UserRepository.java
-    └── model/
-        ├── entity/          # MongoDB documents
-        ├── dto/             # Request/Response DTOs
-        └── mapper/          # Entity-DTO mappers
-```
+| Module | Endpoints |
+|--------|-----------|
+| Auth | `/auth/register`, `/auth/login`, `/auth/refresh` |
+| Users | `/users/me`, `/users/:id`, `/users/:id/follow` |
+| Tasks | `/tasks` (CRUD), `/tasks?status=&category=` |
+| Products | `/products`, `/products/:id`, `/products/categories` |
+| Orders | `/orders`, `/orders/:id` |
+| Cart | `/cart`, `/cart/items` |
+| Posts | `/posts`, `/posts/:id/like`, `/posts/:id/comments` |
+| Notes | `/notes`, `/notes/:id/pin`, `/notes/:id/favorite` |
+| Events | `/events`, `/events/map`, `/events/:id/attend` |
 
 ### Key Dependencies
 
 ```xml
 <dependencies>
-    <!-- Spring Boot -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
@@ -259,25 +222,15 @@ modules/
         <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
-
-    <!-- JWT -->
-    <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-api</artifactId>
         <version>0.12.3</version>
     </dependency>
-
-    <!-- Swagger -->
     <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         <version>2.3.0</version>
     </dependency>
-
-    <!-- Utilities -->
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
@@ -290,111 +243,37 @@ modules/
 </dependencies>
 ```
 
-### API Endpoints
+## Docker Services
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/auth/register` | Register new user |
-| POST | `/api/v1/auth/login` | User login |
-| POST | `/api/v1/auth/refresh` | Refresh token |
-| GET | `/api/v1/users/me` | Get current user |
-| PUT | `/api/v1/users/me` | Update current user |
+| Service | Port | Description |
+|---------|------|-------------|
+| mongodb | 27017 | Database |
+| api | 8080 | Spring Boot API |
+| mongo-express | 8081 | DB Admin (optional) |
 
-### Testing
+## Testing
 
 ```bash
-cd api
+# Flutter
+cd mobile && flutter test --coverage
 
-# Run all tests
-mvn test
-
-# Run with coverage
-mvn test jacoco:report
-
-# Integration tests
-mvn verify -Pintegration-test
+# Spring Boot
+cd api && mvn test jacoco:report
 ```
 
-## Docker Configuration
-
-### docker-compose.yml Services
-
-| Service | Image | Port | Description |
-|---------|-------|------|-------------|
-| mongodb | mongo:7.0 | 27017 | Database |
-| api | custom build | 8080 | Spring Boot API |
-| mongo-express | mongo-express | 8081 | DB Admin UI (optional) |
-
-### Environment Variables
+## Environment Variables
 
 ```env
-# MongoDB
 MONGODB_PORT=27017
 MONGODB_ROOT_USERNAME=admin
 MONGODB_ROOT_PASSWORD=admin123
 MONGODB_DATABASE=flutter_db
-
-# API
 API_PORT=8080
 JWT_SECRET=your-secret-key-min-32-chars
 JWT_EXPIRATION=86400000
-
-# Mongo Express (optional)
-MONGO_EXPRESS_PORT=8081
 ```
 
-## Development Workflow
-
-### 1. Start Backend Services
-
-```bash
-docker-compose up -d mongodb api
-```
-
-### 2. Develop Flutter App
-
-```bash
-cd mobile
-flutter run
-```
-
-### 3. Run Tests
-
-```bash
-# Flutter tests
-cd mobile && flutter test
-
-# API tests
-cd api && mvn test
-```
-
-### 4. Build for Production
-
-```bash
-# Flutter APK
-cd mobile && flutter build apk --release
-
-# Flutter iOS
-cd mobile && flutter build ios --release
-```
-
-## Code Quality Standards
-
-### Flutter
-
-- Analyzer rules in `analysis_options.yaml`
-- Format with `dart format`
-- Generate code with `build_runner`
-
-### Java
-
-- Checkstyle for code style
-- JaCoCo for coverage (min 80%)
-- SpotBugs for static analysis
-
-## Troubleshooting
-
-### API Connection from Emulator
+## API Connection
 
 ```dart
 // Android Emulator
@@ -403,15 +282,8 @@ const baseUrl = 'http://10.0.2.2:8080/api/v1';
 // iOS Simulator
 const baseUrl = 'http://localhost:8080/api/v1';
 
-// Physical Device (use your machine's IP)
+// Physical Device
 const baseUrl = 'http://192.168.x.x:8080/api/v1';
-```
-
-### Reset Database
-
-```bash
-docker-compose down -v
-docker-compose up -d
 ```
 
 ## Related Documentation
@@ -419,4 +291,4 @@ docker-compose up -d
 - [Flutter Documentation](https://docs.flutter.dev/)
 - [Spring Boot Documentation](https://docs.spring.io/spring-boot/)
 - [BLoC Library](https://bloclibrary.dev/)
-- [MongoDB Documentation](https://www.mongodb.com/docs/)
+- [FEATURES.md](../FEATURES.md) - Detailed feature specification
