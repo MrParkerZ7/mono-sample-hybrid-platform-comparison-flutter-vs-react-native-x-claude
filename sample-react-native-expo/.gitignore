@@ -1,0 +1,61 @@
+# React Native / Expo
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/web-build/
+mobile/*.jks
+mobile/*.p8
+mobile/*.p12
+mobile/*.key
+mobile/*.mobileprovision
+mobile/*.orig.*
+mobile/npm-debug.*
+mobile/yarn-debug.*
+mobile/yarn-error.*
+
+# Expo
+mobile/.expo-shared/
+
+# Native builds
+mobile/android/
+mobile/ios/
+
+# Metro bundler
+mobile/.metro-health-check*
+
+# NestJS / Node
+api/node_modules/
+api/dist/
+api/coverage/
+api/*.tsbuildinfo
+
+# pnpm
+api/pnpm-lock.yaml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/mongo-data/
+
+# Testing
+mobile/coverage/
+api/coverage/

@@ -1,0 +1,70 @@
+# Flutter/Dart
+mobile/.dart_tool/
+mobile/.packages
+mobile/.pub-cache/
+mobile/.pub/
+mobile/build/
+mobile/*.iml
+mobile/.metadata
+
+# Flutter generated
+mobile/lib/generated_plugin_registrant.dart
+
+# Android
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/*.iml
+mobile/android/key.properties
+mobile/android/**/*.keystore
+mobile/android/app/debug/
+mobile/android/app/profile/
+mobile/android/app/release/
+
+# iOS
+mobile/ios/.symlinks/
+mobile/ios/Pods/
+mobile/ios/Flutter/flutter_export_environment.sh
+mobile/ios/Flutter/Generated.xcconfig
+mobile/ios/Flutter/app.flx
+mobile/ios/Flutter/App.framework
+mobile/ios/Flutter/Flutter.framework
+mobile/ios/Flutter/Flutter.podspec
+mobile/ios/ServiceDefinitions.json
+mobile/ios/Runner/GeneratedPluginRegistrant.*
+
+# Spring Boot / Java
+api/target/
+api/*.jar
+api/*.war
+api/*.ear
+api/*.class
+api/.settings/
+api/.project
+api/.classpath
+api/*.iml
+
+# Maven
+api/.mvn/
+api/mvnw
+api/mvnw.cmd
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/mongo-data/
